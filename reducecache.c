@@ -16,7 +16,11 @@ void output_configuration(void)
 	if(!GetSystemFileCacheSize(&min_size, &max_size, &flags)) {
 		printf("%u\n", GetLastError());
 	}
+#if defined(__x86_64)
+	printf("%" PRIu64 ",%" PRIu64 ",%u\n", min_size, max_size, flags);
+#else
 	printf("%" PRIu32 ",%" PRIu32 ",%u\n", min_size, max_size, flags);
+#endif
 }
 
 void adjust_token(void)
@@ -43,7 +47,11 @@ int main(void)
 	if(!GetSystemFileCacheSize(&prev_min_size, &prev_max_size, &prev_flags)) {
 		printf("%u\n", GetLastError());
 	}
+#if defined(__x86_64)
+	printf("%" PRIu64 ",%" PRIu64 ",%u\n", prev_min_size, prev_max_size, prev_flags);
+#else
 	printf("%" PRIu32 ",%" PRIu32 ",%u\n", prev_min_size, prev_max_size, prev_flags);
+#endif
 	if(!SetSystemFileCacheSize(0, 64 * 1024 * 1024, FILE_CACHE_MAX_HARD_ENABLE)) {
 		printf("Set1: %u\n", GetLastError());
 	}
