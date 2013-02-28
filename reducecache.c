@@ -1,3 +1,14 @@
+/************************************************************************
+
+    reducecache.c: Source file for diskcache reducer for x64 Windows
+
+    Written by Yasutaka ATARASHI <yak_ex@mx.scn.tv>
+
+    Distributed under the terms of NYSL License, Version 0.9982
+    See http://www.kmonos.net/nysl/
+
+ ***********************************************************************/
+
 #define _WIN32_WINNT 0x0502
 #include <windows.h>
 #ifndef FILE_CACHE_FLAGS_DEFINED

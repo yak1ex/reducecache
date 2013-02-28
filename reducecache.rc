@@ -1,3 +1,14 @@
+/************************************************************************
+
+    reducecache.rc: Resource file for diskcache reducer for x64 Windows
+
+    Written by Yasutaka ATARASHI <yak_ex@mx.scn.tv>
+
+    Distributed under the terms of NYSL License, Version 0.9982
+    See http://www.kmonos.net/nysl/
+
+ ***********************************************************************/
+
 #include <windows.h>
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "reducecache.exe.manifest"
