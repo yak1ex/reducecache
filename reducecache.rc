@@ -7,8 +7,49 @@
     Distributed under the terms of NYSL License, Version 0.9982
     See http://www.kmonos.net/nysl/
 
+    $Id$
+
  ***********************************************************************/
 
 #include <windows.h>
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "reducecache.exe.manifest"
+
+//
+// Version Information resources
+//
+IDV_VERSIONINFO VERSIONINFO
+    FILEVERSION     0,1,2013,306
+    PRODUCTVERSION  0,1,2013,306
+    FILEOS          VOS_NT_WINDOWS32
+    FILETYPE        VFT_DLL | VFT_APP
+    FILESUBTYPE     VFT2_UNKNOWN
+    FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+#ifdef DEBUG
+    FILEFLAGS       VS_FF_DEBUG | VS_FF_PRIVATEBUILD | VS_FF_PRERELEASE
+#else
+    FILEFLAGS       0x00000000
+#endif
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041103A4"
+        BEGIN
+            VALUE "CompanyName", "Yak!"
+            VALUE "FileDescription", " - "
+            VALUE "FileVersion", "Ver 0.01 (2013/03/06)"
+            VALUE "InternalName", "reducecache.exe"
+            VALUE "LegalCopyright", "Written by Yak!"
+            VALUE "OriginalFilename", "reducecache.exe"
+            VALUE "ProductName", "reducecache.exe"
+            VALUE "ProductVersion", "Ver 0.01 (2013/03/06)"
+#ifdef DEBUG
+            VALUE "PrivateBuild", "Debug build"
+#endif
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0411, 0x03A4
+    END
+END
