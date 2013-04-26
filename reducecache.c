@@ -48,10 +48,36 @@ void adjust_token(void)
 	AdjustTokenPrivileges(token, FALSE, &priv, 0, NULL, NULL);
 }
 
-int main(void)
+void usage(void)
+{
+	puts(
+		"usage:\n"
+		"\treducecache -h : show this help\n"
+		"\treducecache [<max>] : Specify max size of disk cache\n"
+		"\t\tDefaults to 64 * 1024 * 1024 = 67108864\n"
+		"\t\tYou can specify the value in decimal, octal, or hexadecimal.\n"
+		"\t\tYou need to have appropriate privileage.\n"
+	);
+	exit(0);
+}
+
+int main(int argc, char **argv)
 {
 	SIZE_T prev_min_size = 0, prev_max_size = 0;
 	DWORD prev_flags = 0, flags;
+	DWORD max_size = 64 * 1024 * 1024;
+
+	if(argc > 2) {
+		usage();
+	} else if(argc == 2) {
+		if((argv[1][0] == '-' || argv[1][0] == '/') && argv[1][1] == 'h' && argv[1][2] == '\0') {
+			usage();
+		} else {
+			char *endptr;
+			max_size = strtoul(argv[1], &endptr, 0);
+			if(*endptr != '\0') usage();
+		}
+	}
 
 	adjust_token();
 
@@ -63,7 +89,7 @@ int main(void)
 #else
 	printf("%" PRIu32 ",%" PRIu32 ",%u\n", prev_min_size, prev_max_size, prev_flags);
 #endif
-	if(!SetSystemFileCacheSize(0, 64 * 1024 * 1024, FILE_CACHE_MAX_HARD_ENABLE)) {
+	if(!SetSystemFileCacheSize(0, max_size, FILE_CACHE_MAX_HARD_ENABLE)) {
 		printf("Set1: %u\n", GetLastError());
 	}
 
