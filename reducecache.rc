@@ -19,8 +19,8 @@ CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "reducecache.exe.manifest"
 // Version Information resources
 //
 IDV_VERSIONINFO VERSIONINFO
-    FILEVERSION     0,1,2013,306
-    PRODUCTVERSION  0,1,2013,306
+    FILEVERSION     0,2,2013,429
+    PRODUCTVERSION  0,2,2013,429
     FILEOS          VOS_NT_WINDOWS32
     FILETYPE        VFT_DLL | VFT_APP
     FILESUBTYPE     VFT2_UNKNOWN
@@ -37,12 +37,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Yak!"
             VALUE "FileDescription", " - "
-            VALUE "FileVersion", "Ver 0.01 (2013/03/06)"
+            VALUE "FileVersion", "Ver 0.02 (2013/04/29)"
             VALUE "InternalName", "reducecache.exe"
             VALUE "LegalCopyright", "Written by Yak!"
             VALUE "OriginalFilename", "reducecache.exe"
             VALUE "ProductName", "reducecache.exe"
-            VALUE "ProductVersion", "Ver 0.01 (2013/03/06)"
+            VALUE "ProductVersion", "Ver 0.02 (2013/04/29)"
 #ifdef DEBUG
             VALUE "PrivateBuild", "Debug build"
 #endif
