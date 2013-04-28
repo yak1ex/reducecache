@@ -28,9 +28,9 @@ void output_configuration(void)
 		printf("%u\n", GetLastError());
 	}
 #if defined(__x86_64)
-	printf("%" PRIu64 ",%" PRIu64 ",%u\n", min_size, max_size, flags);
+	printf("min,max,flag: %" PRIu64 ",%" PRIu64 ",%u\n", min_size, max_size, flags);
 #else
-	printf("%" PRIu32 ",%" PRIu32 ",%u\n", min_size, max_size, flags);
+	printf("min,max,flag: %" PRIu32 ",%" PRIu32 ",%u\n", min_size, max_size, flags);
 #endif
 }
 
@@ -53,10 +53,12 @@ void usage(void)
 	puts(
 		"usage:\n"
 		"\treducecache -h : show this help\n"
-		"\treducecache [<max>] : Specify max size of disk cache\n"
+		"\n"
+		"\treducecache [-v] [<max>] : Specify max size of disk cache\n"
 		"\t\tDefaults to 64 * 1024 * 1024 = 67108864\n"
 		"\t\tYou can specify the value in decimal, octal, or hexadecimal.\n"
 		"\t\tYou need to have appropriate privileage.\n"
+		"\t\tIf -v specified, trace messages are output.\n"
 	);
 	exit(0);
 }
@@ -67,16 +69,29 @@ int main(int argc, char **argv)
 	DWORD prev_flags = 0, flags;
 	DWORD max_size = 64 * 1024 * 1024;
 
-	if(argc > 2) {
-		usage();
-	} else if(argc == 2) {
-		if((argv[1][0] == '-' || argv[1][0] == '/') && argv[1][1] == 'h' && argv[1][2] == '\0') {
-			usage();
+	int verbose = 0;
+	char** arg = argv;
+	if(*arg) ++arg;
+	while(*arg) {
+		if((*arg)[0] == '-' || (*arg)[0] == '/') {
+			if((*arg)[1] == 'h' && (*arg)[2] == '\0') usage();
+			else if((*arg)[1] == 'v' && (*arg)[2] == '\0') verbose = 1;
+			else {
+				puts("Unknown option");
+				usage();
+			}
 		} else {
 			char *endptr;
-			max_size = strtoul(argv[1], &endptr, 0);
+			max_size = strtoul(*arg, &endptr, 0);
 			if(*endptr != '\0') usage();
+			++arg;
+			break;
 		}
+		++arg;
+	}
+	if(*arg) {
+		puts("Extra arguments");
+		usage();
 	}
 
 	adjust_token();
@@ -84,16 +99,13 @@ int main(int argc, char **argv)
 	if(!GetSystemFileCacheSize(&prev_min_size, &prev_max_size, &prev_flags)) {
 		printf("%u\n", GetLastError());
 	}
-#if defined(__x86_64)
-	printf("%" PRIu64 ",%" PRIu64 ",%u\n", prev_min_size, prev_max_size, prev_flags);
-#else
-	printf("%" PRIu32 ",%" PRIu32 ",%u\n", prev_min_size, prev_max_size, prev_flags);
-#endif
+	if(verbose) output_configuration();
+
 	if(!SetSystemFileCacheSize(0, max_size, FILE_CACHE_MAX_HARD_ENABLE)) {
 		printf("Set1: %u\n", GetLastError());
 	}
 
-	output_configuration();
+	if(verbose) output_configuration();
 
 	flags = (prev_flags & FILE_CACHE_MIN_HARD_ENABLE) ? FILE_CACHE_MIN_HARD_ENABLE : FILE_CACHE_MIN_HARD_DISABLE;
 	flags |= (prev_flags & FILE_CACHE_MAX_HARD_ENABLE) ? FILE_CACHE_MAX_HARD_ENABLE : FILE_CACHE_MAX_HARD_DISABLE;
@@ -101,7 +113,7 @@ int main(int argc, char **argv)
 		printf("Set2: %u\n", GetLastError());
 	}
 
-	output_configuration();
+	if(verbose) output_configuration();
 
 	return 0;
 }
