@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 	if(verbose) output_configuration();
 
 	if(!SetSystemFileCacheSize(0, max_size, FILE_CACHE_MAX_HARD_ENABLE)) {
-		printf("Set1: %u\n", GetLastError());
+		printf("Set error: %u\n", GetLastError());
 	}
 
 	if(verbose) output_configuration();
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 	flags = (prev_flags & FILE_CACHE_MIN_HARD_ENABLE) ? FILE_CACHE_MIN_HARD_ENABLE : FILE_CACHE_MIN_HARD_DISABLE;
 	flags |= (prev_flags & FILE_CACHE_MAX_HARD_ENABLE) ? FILE_CACHE_MAX_HARD_ENABLE : FILE_CACHE_MAX_HARD_DISABLE;
 	if(!SetSystemFileCacheSize(prev_min_size, prev_max_size, flags)) {
-		printf("Set2: %u\n", GetLastError());
+		printf("Reset error: %u\n", GetLastError());
 	}
 
 	if(verbose) output_configuration();
